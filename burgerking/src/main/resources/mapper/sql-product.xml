@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0/EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="burger.mapper.ProductMapper">
+
+<!-- 
+	<select id="basketAll" resultType="burger.dto.ProductDto">
+		SELECT
+		PRODUCT_NUM,PRODUCT_TYPE,PRODUCT_NAME,PRODUCT_PRICE,PRODUCT_IMG,BASKET_PRODUCT_NUM
+		FROM
+		BASKET A LEFT OUTER JOIN PRODUCT B ON
+		A.BASKET_PRODUCT=B.PRODUCT_NUM
+	</select>
+
+	<select id="productName" resultType="String">
+		SELECT
+		PRODUCT_NAME FROM
+		PRODUCT WHERE PRODUCT_NUM =#{productNum}
+	</select>
+
+
+	<select id="productImg" resultType="String">
+		SELECT
+		PRODUCT_IMG FROM
+		PRODUCT WHERE PRODUCT_NUM =#{productNum}
+	</select> -->
+
+	<!-- REST -->
+	
+	<delete id="deleteProduct" parameterType="int">
+		DELETE FROM product
+		WHERE PRODUCT_NUM=#{productNum}
+	</delete>
+
+
+	<insert id="insertProduct" parameterType="burger.dto.ProductDto">
+		insert into
+		product(PRODUCT_NUM,PRODUCT_TYPE,PRODUCT_NAME,PRODUCT_PRICE,PRODUCT_IMG)
+		values(#{productNum},#{productType},#{productName},#{productPrice},#{productImg})
+	</insert>
+
+	<update id="updateProduct" parameterType="burger.dto.ProductDto">
+		UPDATE product SET
+		PRODUCT_NUM=#{productNum},PRODUCT_TYPE=#{productType},PRODUCT_NAME=#{productName},PRODUCT_PRICE=#{productPrice},PRODUCT_IMG=#{productImg}
+		where PRODUCT_NUM=#{productNum}
+	</update>
+	
+		<!-- 상품조회(order mapper의 구매내역과 셋트) -->
+	<select id="selectProduct" resultType="burger.dto.ProductDto"
+		parameterType="int">
+		SELECT * FROM PRODUCT WHERE
+		PRODUCT_NUM=#{productNum}
+	</select>
+
+	<!-- 상품전체 조회 -->
+	<!-- <select id="selectProductAll" parameterType="productResultMap"> -->
+	<!-- SELECT -->
+	<!-- PRODUCT_TYPE,PRODUCT_NAME,PRODUCT_PRICE,PRODUCT_IMG FROM PRODUCT -->
+	<!-- </select> -->
+
+	<select id="productAll" resultType="burger.dto.ProductDto">
+		SELECT * FROM
+		PRODUCT
+	</select>
+
+</mapper>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0/EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="burger.mapper.CustomerMapper">
+
+	<!-- 회원가입 -->
+	<insert id="join" parameterType="burger.dto.CustomerDto">
+		INSERT INTO
+		CUSTOMER
+		(EMAIL,NAME,PHONE,SEX,BIRTH,PASSWORD,TOTALPAY)
+		VALUES(#{email},#{name},#{phone},#{sex},#{birth},#{password},0)
+	</insert>
+
+	<!-- 회원정보 -->
+	<select id="getCustomerInfo" parameterType="String"
+		resultType="burger.dto.CustomerDto">
+		SELECT
+		<include refid="memSql" />
+		FROM CUSTOMER WHERE EMAIL=#{email}
+	</select>
+
+	<sql id="memSql">
+		CUSTOMER_NUM AS "customerNum", EMAIL, NAME, PHONE, SEX,
+		BIRTH,
+		PASSWORD
+	</sql>
+
+	<!-- 로그인 성공/실패 -->
+	<select id="selectCustomerNum" resultType="int">
+		SELECT COUNT(EMAIL)
+		FROM
+		CUSTOMER WHERE EMAIL=#{email} and PASSWORD=#{password}
+	</select>
+
+	<!-- 회원정보 수정(업데이트) -->
+	<update id="update" parameterType="burger.dto.CustomerDto">
+		UPDATE CUSTOMER SET
+		PHONE=#{phone}, PASSWORD=#{password} WHERE
+		EMAIL=#{email}
+	</update>
+
+	<!-- 태우 -->
+	<select id="selectAllCustomer"
+		parameterType="burger.dto.CustomerDto">
+		SELECT * FROM CUSTOMER
+	</select>
+
+	<select id="totalPay" resultType="int">
+		SELECT TOTALPAY FROM CUSTOMER
+		WHERE EMAIL=#{loginEmail}
+
+	</select>
+
+	<update id="totalPayUpdate" parameterType="map">
+		UPDATE CUSTOMER SET
+		TOTALPAY=#{totalPay} WHERE EMAIL=#{loginEmail}
+	</update>
+	
+	<!-- REST -->
+	<select id="login" parameterType="burger.dto.CustomerDto" resultType="burger.dto.CustomerDto">
+		select * from customer
+		 where EMAIL=#{email} and PASSWORD=#{password}	
+	</select>
+
+</mapper>
